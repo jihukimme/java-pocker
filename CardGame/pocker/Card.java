@@ -1,34 +1,39 @@
 package CardGame.pocker;
 
 class Card {
-    private final int number;
-    private final char shape;
+    private final CardNumber number;
+    private final CardShape shape;
 
-    Card(int number, char shape) {
+    Card(CardNumber number, CardShape shape) {
         this.number = number;
         this.shape = shape;
     }
 
-    public int getNumber(){
-        return this.number;
+    public CardNumber getNumber() {
+        return number;
     }
 
-    public char getShape() {
-        return this.shape;
+    public CardShape getShape() {
+        return shape;
     }
 
-    private String numberToString() {
-        switch (number) {
-            case 1: return "A";
-            case 11: return "J";
-            case 12: return "Q";
-            case 13: return "K";
-            default: return String.valueOf(number);
-        }
+    public String getNumberName() {
+        return number.getName();
+    }
+    public int getNumberScore() {
+        return number.getScore();
+    }
+
+    public String getShapeName() {
+        return shape.getName();
+    }
+
+    public int getShapeScore() {
+        return shape.getScroe();
     }
 
     @Override
     public String toString() {
-        return this.shape + numberToString();
+        return this.shape.getName() + this.number.getName();
     }
 }

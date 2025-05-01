@@ -11,14 +11,7 @@ class Game {
     public static void main(String[] args) throws IOException {
         int playerNumber;
 
-
         System.out.println("Card Game start");
-
-        // 게임 종목 설정 (pocker로 고정)
-        // System.out.print("gameName : ");
-        // gameName = br.readLine();
-
-
 
         // playerNumber 설정
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -38,8 +31,6 @@ class Game {
                 System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
             }
         }
-
-
 
         // playerManager 생성
         PlayerManager playerManager = new PlayerManager();
@@ -63,11 +54,16 @@ class Game {
         // 100번의 게임 반복
         for(int i=0; i<100; i++){
             gameManager.startGame();
+
+            System.out.println("============================");
+            System.out.println(i+1 + "번째 게임");
+            gameManager.printGameResult();
+
+            gameManager.endGame();
         }
 
-
-        // 게임결과 출력
-        gameManager.printGameResult();
+        // 총 게임결과 출력
+        gameManager.printTotalGameResult();
 
 
         // 게임 종료
