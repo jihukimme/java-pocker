@@ -1,8 +1,7 @@
-package pocker;
+package CardGame.pocker;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import CardGame.pocker.Player;
+
 import java.util.ArrayList;
 
 public class GameManager {

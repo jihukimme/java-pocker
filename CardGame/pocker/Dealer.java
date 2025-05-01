@@ -1,4 +1,6 @@
-package pocker;
+package CardGame.pocker;
+
+import CardGame.pocker.Player;
 
 import java.util.*;
 

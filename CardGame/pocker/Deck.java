@@ -1,4 +1,4 @@
-package pocker;
+package CardGame.pocker;
 
 import java.util.ArrayList;
 

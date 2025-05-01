@@ -1,4 +1,4 @@
-package pocker;
+package CardGame.pocker;
 
 class Card {
     private final int number;
