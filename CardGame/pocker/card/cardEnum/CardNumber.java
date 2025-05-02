@@ -1,4 +1,4 @@
-package CardGame.pocker;
+package CardGame.pocker.card.cardEnum;
 
 public enum CardNumber {
     ONE(14, "Ace"),

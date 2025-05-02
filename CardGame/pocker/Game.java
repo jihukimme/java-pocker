@@ -1,72 +1,43 @@
 package CardGame.pocker;
 
-import CardGame.pocker.Player;
+import CardGame.pocker.view.InputView;
+import CardGame.pocker.view.IntroView;
+import CardGame.pocker.view.OutputView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 class Game {
     public static void main(String[] args) throws IOException {
-        int playerNumber;
+        final IntroView introView = new IntroView();
+        final InputView inputView = new InputView();
+        final OutputView outputView = new OutputView();
 
-        System.out.println("Card Game start");
+        final PlayerManager playerManager = new PlayerManager();
+        final GameManager gameManager = new GameManager(playerManager.getPlayers());
 
-        // playerNumber 설정
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        introView.printGameIntro();
 
-        while(true){
-            System.out.print("playerNumber : ");
-            try {
-                playerNumber = Integer.parseInt(br.readLine());
+        int playersNumber = inputView.readPlayersNumber();
 
-                if(playerNumber >= 1 && playerNumber <= 4){
-                    break;
-                }
-                else {
-                    System.out.println("playerNumber는 최소 1, 최대 4의 값을 갖을 수 있습니다. 다시 입력해주세요.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("숫자만 입력 가능합니다. 다시 입력해주세요.");
-            }
-        }
-
-        // playerManager 생성
-        PlayerManager playerManager = new PlayerManager();
-
-        // player 추가
-        int added = 0;
-        while (added < playerNumber) {
-            System.out.print("playerNickname : ");
-            String nickname = br.readLine();
+        // playerNumbers 만큼 nickname 입력받아 player 추가
+        for(int i = 1; i <= playersNumber; i++){
+            String nickname = inputView.readPlayerNickname();
             boolean success = playerManager.addPlayer(nickname);
-            if (success) {
-                added++;
+            if(!success){
+                i--;
             }
         }
 
-        // gameManager 생성, 게임 시작
-        ArrayList<Player> players = playerManager.getPlayers();
-        GameManager gameManager = new GameManager(players);
-
-
-        // 100번의 게임 반복
-        for(int i=0; i<100; i++){
+        // 100회의 게임 반복
+        for(int round=1; round<=100; round++){
             gameManager.startGame();
 
-            System.out.println("============================");
-            System.out.println(i+1 + "번째 게임");
-            gameManager.printGameResult();
+            outputView.printGameResult(round, gameManager.getWinner(), gameManager.getPlayers(), gameManager.getDealer());
 
             gameManager.endGame();
         }
 
         // 총 게임결과 출력
-        gameManager.printTotalGameResult();
-
-
-        // 게임 종료
-        br.close();
+         outputView.printFinalGameResult(gameManager.getPlayers());
     }
 }

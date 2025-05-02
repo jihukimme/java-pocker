@@ -1,8 +1,10 @@
 package CardGame.pocker;
 
+import CardGame.pocker.card.Card;
+
 import java.util.ArrayList;
 
-class Player {
+public class Player {
     private static final int startGameMoney = 10000;
 
     private final String nickname;

@@ -1,8 +1,11 @@
-package CardGame.pocker;
+package CardGame.pocker.card;
+
+import CardGame.pocker.card.cardEnum.CardNumber;
+import CardGame.pocker.card.cardEnum.CardShape;
 
 import java.util.ArrayList;
 
-class Deck {
+public class Deck {
     private final ArrayList<Card> cards;
 
     // 싱글톤 인스턴스
