@@ -1,6 +1,6 @@
-package CardGame.pocker;
+package CardGame.pocker.model.player;
 
-import CardGame.pocker.card.Card;
+import CardGame.pocker.model.card.Card;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Player {
     private int loseCount;
     private final ArrayList<Card> playerCards;
 
-    Player(String nickname) {
+    public Player(String nickname) {
         if (nickname == null || nickname.length() > 20) {
             throw new IllegalArgumentException("nickname은 null이거나, 20자를 넘길 수 없습니다.");
         }

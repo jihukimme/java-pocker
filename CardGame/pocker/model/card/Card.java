@@ -1,7 +1,4 @@
-package CardGame.pocker.card;
-
-import CardGame.pocker.card.cardEnum.CardNumber;
-import CardGame.pocker.card.cardEnum.CardShape;
+package CardGame.pocker.model.card;
 
 public class Card {
     private final CardNumber number;

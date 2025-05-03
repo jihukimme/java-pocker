@@ -1,4 +1,4 @@
-package CardGame.pocker.card.cardEnum;
+package CardGame.pocker.model.card;
 
 public enum CardShape {
     SPADE("♠", 4),

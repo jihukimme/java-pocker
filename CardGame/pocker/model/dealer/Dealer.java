@@ -1,8 +1,9 @@
-package CardGame.pocker;
+package CardGame.pocker.model.dealer;
 
-import CardGame.pocker.card.Card;
-import CardGame.pocker.card.cardEnum.CardRank;
-import CardGame.pocker.card.Deck;
+import CardGame.pocker.model.player.Player;
+import CardGame.pocker.model.card.Card;
+import CardGame.pocker.model.card.CardRank;
+import CardGame.pocker.model.card.Deck;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ public class Dealer {
     private final ArrayList<Player> players;
     private final Map<Player, CardRank> playerCardRankMap;
 
-    Dealer(ArrayList<Player> players) {
+    public Dealer(ArrayList<Player> players) {
         // deck은 dealer의 손에 있고, dealer는 deck을 섞고, player에게 카드를 나눠줌
         // dealer는 각 player의 카드를 평가하고 결과를 점수로 반환
         Deck deck = Deck.getInstance();
@@ -34,35 +35,26 @@ public class Dealer {
         }
     }
 
+    public String getCardRankName(ArrayList<Card> cards) {
+        CardRank cardRank = getCardRank(cards);
 
-    public List<Map.Entry<Player, CardRank>> evaluatePlayerCard(ArrayList<Player> players) {
-        playerCardRankMap.clear();
-
-        for (Player player : players) {
-            ArrayList<Card> playerCards = player.getPlayerCards();
-            CardRank cardRank = getCardRank(playerCards);
-            playerCardRankMap.put(player, cardRank);
-        }
-
-        List<Map.Entry<Player, CardRank>> entryList = new ArrayList<>(playerCardRankMap.entrySet());
-        entryList.sort((entry1, entry2) -> entry2.getValue().getScore() - entry1.getValue().getScore());
-
-        return entryList;
+        return cardRank.getName();
     }
 
 
 
     public Player getWinner(ArrayList<Player> players) {
-        List<Map.Entry<Player, CardRank>> entryList = evaluatePlayerCard(players);
+        evaluatePlayerCard(players);
+        List<Map.Entry<Player, CardRank>> playerCardRankList = getPlayerCardRankList();
 
         // 승자 결정
-        Player winner = entryList.get(0).getKey();  // 가장 높은 족보 점수를 가진 플레이어
-        int bestScore = entryList.get(0).getValue().getScore();
+        Player winner = playerCardRankList.get(0).getKey();  // 가장 높은 족보 점수를 가진 플레이어
+        int bestScore = playerCardRankList.get(0).getValue().getScore();
 
         // 점수가 동일한 경우 하이카드로 승자 비교
-        for (int i = 1; i < entryList.size(); i++) {
-            Player player = entryList.get(i).getKey();
-            CardRank cardRank = entryList.get(i).getValue();
+        for (int i = 1; i < playerCardRankList.size(); i++) {
+            Player player = playerCardRankList.get(i).getKey();
+            CardRank cardRank = playerCardRankList.get(i).getValue();
             if (cardRank.getScore() == bestScore) {
                 // 로티플일 때(모양비교)
                 // 백스플일 때(높은 숫자, 숫자 같으면 모양비교)
@@ -86,6 +78,7 @@ public class Dealer {
 
         return winner;
     }
+
 
     private CardRank getCardRank(ArrayList<Card> cards) {
 
@@ -130,10 +123,21 @@ public class Dealer {
         return CardRank.HIGH_CARD;
     }
 
-    public String getCardRankName(ArrayList<Card> cards) {
-        CardRank cardRank = getCardRank(cards);
+    private void evaluatePlayerCard(ArrayList<Player> players) {
+        playerCardRankMap.clear();
 
-        return cardRank.getName();
+        for (Player player : players) {
+            ArrayList<Card> playerCards = player.getPlayerCards();
+            CardRank cardRank = getCardRank(playerCards);
+            playerCardRankMap.put(player, cardRank);
+        }
+    }
+
+    private List<Map.Entry<Player, CardRank>> getPlayerCardRankList() {
+        List<Map.Entry<Player, CardRank>> playerCardRankList = new ArrayList<>(playerCardRankMap.entrySet());
+        playerCardRankList.sort((entry1, entry2) -> entry2.getValue().getScore() - entry1.getValue().getScore());
+
+        return playerCardRankList;
     }
 
 

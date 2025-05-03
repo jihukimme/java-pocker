@@ -1,20 +1,21 @@
-package CardGame.pocker;
+package CardGame.pocker.model.game;
+
+import CardGame.pocker.model.dealer.Dealer;
+import CardGame.pocker.model.player.Player;
 
 import java.util.ArrayList;
 
-public class GameManager {
+public class Game {
     private static final int pockerPrizeMoney = 100;
 
     private final ArrayList<Player> players;
     private Player winner;
     private final Dealer dealer;
 
-
-    public GameManager(ArrayList<Player> players) {
-        this.players = players;
+    public Game() {
+        this.players = new ArrayList<>();
         this.dealer = new Dealer(players);
     }
-
 
     public void startGame(){
         dealer.shuffle();
@@ -51,4 +52,22 @@ public class GameManager {
         return dealer;
     }
 
+    public boolean addPlayer(String nickname) {
+        if (isNicknameDuplicated(nickname)) {
+            System.out.println("nickname이 중복됩니다. 다시 시도해주세요.");
+            return false;
+        } else {
+            players.add(new Player(nickname));
+            return true;
+        }
+    }
+
+    private boolean isNicknameDuplicated(String nickname) {
+        for (Player player : players) {
+            if (player.getNickname().equals(nickname)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

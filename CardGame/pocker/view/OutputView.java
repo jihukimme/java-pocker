@@ -1,7 +1,7 @@
 package CardGame.pocker.view;
 
-import CardGame.pocker.Dealer;
-import CardGame.pocker.Player;
+import CardGame.pocker.model.dealer.Dealer;
+import CardGame.pocker.model.player.Player;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package CardGame.pocker.card.cardEnum;
+package CardGame.pocker.model.card;
 
 public enum CardRank {
     ROYAL_FLUSH(13, "로얄 플러시"),
