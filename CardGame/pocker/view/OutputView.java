@@ -13,7 +13,7 @@ public class OutputView {
 
         for (Player player : players) {
             System.out.print(player);
-            System.out.println(" -> " + player.getNickname() + "의 족보 : " + dealer.getCardRankName(player.getPlayerCards()));
+            System.out.println(" -> " + player.getNickname() + "의 족보 : " + dealer.getCardRankName(player));
         }
     }
 
