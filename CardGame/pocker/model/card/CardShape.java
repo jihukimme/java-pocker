@@ -18,7 +18,7 @@ public enum CardShape {
         return name;
     }
 
-    public int getScroe() {
+    public int getScore() {
         return score;
     }
 }

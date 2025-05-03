@@ -12,8 +12,8 @@ public class Deck {
     private Deck() {
         cards = new ArrayList<>();
 
-        for(CardShape cardShape : CardShape.values()){
-            for(CardNumber cardNumber : CardNumber.values()){
+        for (CardShape cardShape : CardShape.values()) {
+            for (CardNumber cardNumber : CardNumber.values()) {
                 cards.add(new Card(cardNumber, cardShape));
             }
         }

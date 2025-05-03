@@ -1,14 +1,11 @@
 package CardGame.pocker.controller;
 
-import CardGame.pocker.model.dealer.Dealer;
 import CardGame.pocker.model.game.Game;
-import CardGame.pocker.model.player.Player;
 import CardGame.pocker.view.InputView;
 import CardGame.pocker.view.IntroView;
 import CardGame.pocker.view.OutputView;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class GameController {
     private final Game game;

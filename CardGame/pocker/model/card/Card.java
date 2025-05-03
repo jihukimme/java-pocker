@@ -29,7 +29,7 @@ public class Card {
     }
 
     public int getShapeScore() {
-        return shape.getScroe();
+        return shape.getScore();
     }
 
     @Override
