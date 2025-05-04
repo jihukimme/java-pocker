@@ -44,7 +44,7 @@ CardGame.pocker/
 
 
 ### 🧩 ERD
-```
+```bash
 +---------------------+
 |       Game          |
 +---------------------+
@@ -58,21 +58,21 @@ CardGame.pocker/
 +---------------------+
 |
 | 1
-|------------------+
-|                  |
-v                  v
-+-------------+     +-------------+
-|   Dealer    |     |   Player    |
-+-------------+     +-------------+
+|------------------------------+
+|                  			   |
+v                  			   v
++-------------+     	  +-------------+
+|   Dealer    |     	  |   Player    |
++-------------+     	  +-------------+
 | - deckCards             | - nickname
 | - players               | - gameMoney
 |                         | - winCount
 +-------------+           | - loseCount
 | +shuffle()              | - playerCards: List<Card>
 | +giveCardsToPlayers()   +-------------+
-| +getWinner()            | +addCard()  
-| +getCardRank()          | +removeAllPlayerCards()
-+-------------+           +-------------+
+| +getWinner()            | +removeAllPlayerCards()
+| +getCardRank()          +-------------+
++-------------+           
 |
 | uses
 v
