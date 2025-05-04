@@ -11,16 +11,17 @@ import java.util.*;
 public class Dealer {
     private final ArrayList<Card> deckCards;
     private final ArrayList<Player> players;
-    private final Map<Player, CardRank> playersCardRankMap;
+    // private final Map<Player, CardRank> playersCardRankMap;
     // private final Map<String, Integer> playerCardNumberCountMap;
 
     public Dealer(ArrayList<Player> players) {
         // deck은 dealer의 손에 있고, dealer는 deck을 섞고, player에게 카드를 나눠줌
         // dealer는 각 player의 카드를 평가하고 결과를 점수로 반환
         Deck deck = Deck.getInstance();
-        this.deckCards = deck.getCards();
+        // this.deckCards = deck.getCards();
+        this.deckCards = new ArrayList<Card>(deck.getCards());
         this.players = players;
-        this.playersCardRankMap = new HashMap<>();
+        // this.playersCardRankMap = new HashMap<>();
         // this.playerCardNumberCountMap = new HashMap<>();
     }
 
@@ -53,7 +54,7 @@ public class Dealer {
         // 원페어일 때(숫자, 모양)
         // 하이카드(숫자, 모양)
 
-
+        Map<Player, CardRank> playersCardRankMap = getPlayersCardRankMap(players);
         CardRank cardRank = playersCardRankMap.get(player);
 
         return cardRank.getName();
@@ -61,8 +62,8 @@ public class Dealer {
 
 
     public Player getWinner(ArrayList<Player> players) {
-        evaluatePlayersCard(players);
-        List<Map.Entry<Player, CardRank>> playerCardRankList = getPlayerCardRankList();
+        // evaluatePlayersCard(players);
+        List<Map.Entry<Player, CardRank>> playerCardRankList = getPlayerCardRankList(players);
 
         // 승자 결정
         Player winner = playerCardRankList.get(0).getKey();  // 가장 높은 족보 점수를 가진 플레이어
@@ -128,17 +129,40 @@ public class Dealer {
         return CardRank.HIGH_CARD;
     }
 
-    private void evaluatePlayersCard(ArrayList<Player> players) {
-        playersCardRankMap.clear();
+//    private void evaluatePlayersCard(ArrayList<Player> players) {
+//        playersCardRankMap.clear();
+//
+//        for (Player player : players) {
+//            ArrayList<Card> playerCards = player.getPlayerCards();
+//            CardRank cardRank = getCardRank(playerCards);
+//
+//            playersCardRankMap.put(player, cardRank);
+//        }
+//
+//    }
 
-        for (Player player : players) {
-            ArrayList<Card> playerCards = player.getPlayerCards();
-            CardRank cardRank = getCardRank(playerCards);
+    private Map<Player, CardRank> getPlayersCardRankMap(ArrayList<Player> players) {
+      Map<Player, CardRank> playersCardRankMap = new HashMap<>();
 
-            playersCardRankMap.put(player, cardRank);
-        }
+      for (Player player : players) {
+        ArrayList<Card> playerCards = player.getPlayerCards();
+        CardRank cardRank = getCardRank(playerCards);
 
+        playersCardRankMap.put(player, cardRank);
+      }
+
+      return playersCardRankMap;
     }
+
+//    private void countPlayerCardNumber(ArrayList<Card> cards) {
+//        playerCardNumberCountMap.clear();
+//
+//        for (Card card : cards) {
+//            String cardNumberName = card.getNumberName();
+//            playerCardNumberCountMap.put(cardNumberName, playerCardNumberCountMap.getOrDefault(cardNumberName, 0) + 1);
+//        }
+//    }
+
 
     private Map<String,Integer> getPlayerCardNumberCountMap(ArrayList<Card> cards) {
         Map<String, Integer> playerCardNumberCountMap = new HashMap<>();
@@ -151,7 +175,9 @@ public class Dealer {
         return playerCardNumberCountMap;
     }
 
-    private List<Map.Entry<Player, CardRank>> getPlayerCardRankList() {
+    private List<Map.Entry<Player, CardRank>> getPlayerCardRankList(ArrayList<Player> players) {
+        Map<Player, CardRank> playersCardRankMap = getPlayersCardRankMap(players);
+
         List<Map.Entry<Player, CardRank>> playerCardRankList = new ArrayList<>(playersCardRankMap.entrySet());
         playerCardRankList.sort((entry1, entry2) -> entry2.getValue().getScore() - entry1.getValue().getScore());
 
