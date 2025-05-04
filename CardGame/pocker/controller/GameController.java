@@ -31,6 +31,7 @@ public class GameController {
             if (!success) i--;
         }
 
+        // 요구사항대로 100회의 게임 실행
         for (int round = 1; round <= 100; round++) {
             game.startGame();
             outputView.printGameResult(round, game.getWinner(), game.getPlayers(), game.getDealer());

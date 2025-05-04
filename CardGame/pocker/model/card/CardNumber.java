@@ -30,13 +30,4 @@ public enum CardNumber {
     public String getName() {
         return name;
     }
-
-    public static int getScoreByName(String name) {
-        for (CardNumber number : values()) {
-            if (number.getName().equals(name)) {
-                return number.getScore();
-            }
-        }
-        throw new IllegalArgumentException("Unknown card number: " + name);
-    }
 }

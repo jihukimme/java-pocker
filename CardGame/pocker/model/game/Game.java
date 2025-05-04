@@ -6,7 +6,8 @@ import CardGame.pocker.model.player.Player;
 import java.util.ArrayList;
 
 public class Game {
-    private static final int pockerPrizeMoney = 100;
+    private static final int pockerWinnerPrizeMoney = 100;
+    private static final int pockerLoserPrizeMoney = 0;
 
     private final ArrayList<Player> players;
     private Player winner;
@@ -22,13 +23,13 @@ public class Game {
         dealer.giveCardsToPlayers();
 
         winner = dealer.getWinner(players);
-        winner.addPrizeMoney(pockerPrizeMoney);
+        winner.addPrizeMoney(pockerWinnerPrizeMoney);
         winner.addWinCount();
 
         for(Player player : players){
             if(player != winner){
                 player.addLoseCount();
-                player.addPrizeMoney(0);
+                player.addPrizeMoney(pockerLoserPrizeMoney);
             }
         }
     }

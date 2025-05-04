@@ -12,7 +12,7 @@ public class Dealer {
     private final ArrayList<Card> deckCards;
     private final ArrayList<Player> players;
     private final Map<Player, CardRank> playersCardRankMap;
-    private final Map<String, Integer> playerCardNumberCountMap;
+    // private final Map<String, Integer> playerCardNumberCountMap;
 
     public Dealer(ArrayList<Player> players) {
         // deck은 dealer의 손에 있고, dealer는 deck을 섞고, player에게 카드를 나눠줌
@@ -21,7 +21,7 @@ public class Dealer {
         this.deckCards = deck.getCards();
         this.players = players;
         this.playersCardRankMap = new HashMap<>();
-        this.playerCardNumberCountMap = new HashMap<>();
+        // this.playerCardNumberCountMap = new HashMap<>();
     }
 
     public void shuffle() {
@@ -94,7 +94,7 @@ public class Dealer {
         boolean backStraight = isBackStraight(cards);
         boolean mountain = isMountain(cards);
 
-        countPlayerCardNumber(cards);
+        Map<String,Integer> playerCardNumberCountMap = getPlayerCardNumberCountMap(cards);
         Collection<Integer> counts = playerCardNumberCountMap.values();
 
         // 1. 로얄 플러시(같은 모양, 10 J Q K A) -> 플러시 + 마운틴
@@ -140,13 +140,15 @@ public class Dealer {
 
     }
 
-    private void countPlayerCardNumber(ArrayList<Card> cards) {
-        playerCardNumberCountMap.clear();
+    private Map<String,Integer> getPlayerCardNumberCountMap(ArrayList<Card> cards) {
+        Map<String, Integer> playerCardNumberCountMap = new HashMap<>();
 
         for (Card card : cards) {
             String cardNumberName = card.getNumberName();
             playerCardNumberCountMap.put(cardNumberName, playerCardNumberCountMap.getOrDefault(cardNumberName, 0) + 1);
         }
+
+        return playerCardNumberCountMap;
     }
 
     private List<Map.Entry<Player, CardRank>> getPlayerCardRankList() {
@@ -181,17 +183,17 @@ public class Dealer {
 
     private boolean isBackStraight(ArrayList<Card> cards) {
         // 백스트레이트(A(14) 2(2) 3(3) 4(4) 5(5))
-        Card fisrstCard = cards.get(0);
+        Card firstCard = cards.get(0);
         Card lastCard = cards.get(cards.size() - 1);
 
-        if (fisrstCard.getNumberScore() != 2 || lastCard.getNumberScore() != 14) {
+        if (firstCard.getNumberScore() != 2 || lastCard.getNumberScore() != 14) {
             return false;
         } else {
             for (int i = 1; i < cards.size(); i++) {
-                if (fisrstCard.getNumberScore() + 1 != cards.get(i).getNumberScore()) {
+                if (firstCard.getNumberScore() + 1 != cards.get(i).getNumberScore()) {
                     return false;
                 } else {
-                    fisrstCard = cards.get(i);
+                    firstCard = cards.get(i);
                 }
             }
         }
@@ -214,50 +216,34 @@ public class Dealer {
         ArrayList<Card> cards1 = player1.getPlayerCards();
         ArrayList<Card> cards2 = player2.getPlayerCards();
 
-        // 로티플일 때(모양비교)
-        // 백스플일 때(높은 숫자, 숫자 같으면 모양비교)
-        // 스티플일 때(높은 숫자, 숫자 같으면 모양비교)
-        // 포카드일 때(포카드 중 높은 숫자)
-        // 풀하우스(같은 숫자인 것 중 높은 숫자)
-        // 플러쉬(모양비교)
-        // 마운틴(모양비교)
-        // 백스트레이트(높은 숫자의 모양비교)
-        // 스트레이트(높은 숫자의 모양비교)
-        // 트리플(트리플 중 숫자모양비교)
-        // 투페어(원페어 두쌍 중 높은 숫자, 숫자 같으면 모양비교)
-        // 원페어일 때(원페어 중 높은 숫자, 숫자 같으면 모양비교)
-        // 하이카드(높은 숫자, 숫자 같으면 모양비교)
+        // special case : 포카드일 때(포카드 중 높은 숫자), 풀하우스(같은 숫자인 것 중 높은 숫자), 트리플(트리플 중 숫자모양비교), 투페어(원페어 두쌍 중 높은 숫자, 숫자 같으면 모양비교), 원페어일 때(원페어 중 높은 숫자, 숫자 같으면 모양비교)
+        // general case : highCard(높은 숫자, 숫자 같으면 모양 비교)
         switch (bestCardRank) {
             case FOUR_OF_A_KIND:
             case FULL_HOUSE:
             case TRIPLE:
             case TWO_PAIR:
             case ONE_PAIR:
-                if (getPairCardHighCard(cards1) == getPairCardHighCard(cards2)) {
-                    return compareCard(cards1.get(0), cards2.get(0)) == cards1.get(0) ? player1 : player2;
-                }
-                return getPairCardHighCard(cards1) > getPairCardHighCard(cards2) ? player1 : player2;
+                Card highCard1 = getHighCardFromPairCard(cards1);
+                Card highCard2 = getHighCardFromPairCard(cards2);
+                return getHighCard(highCard1, highCard2).equals(highCard1) ? player1 : player2;
             default:
-                return compareCard(cards1.get(0), cards2.get(0)) == cards1.get(0) ? player1 : player2;
+                return getHighCard(cards1.get(0), cards2.get(0)).equals(cards1.get(0)) ? player1 : player2;
         }
     }
 
-    private int getPairCardHighCard(ArrayList<Card> cards) {
-        Map<String, Integer> playerCardNumberCountMap = new HashMap<>();
-        for (Card card : cards) {
-            String cardNumberName = card.getNumberName();
-            playerCardNumberCountMap.put(cardNumberName, playerCardNumberCountMap.getOrDefault(cardNumberName, 0) + 1);
-        }
+    private Card getHighCardFromPairCard(ArrayList<Card> cards) {
+        Map<String, Integer> playerCardNumberCountMap = getPlayerCardNumberCountMap(cards);
 
-        return playerCardNumberCountMap.entrySet().stream()
-                .filter(e -> e.getValue() >= 2)
-                .max(Comparator.comparingInt(e -> CardNumber.getScoreByName(e.getKey())))
-                .map(e -> CardNumber.getScoreByName(e.getKey()))
-                .orElse(0);
+        return cards.stream()
+                .filter(card -> playerCardNumberCountMap.get(card.getNumberName()) >= 2)
+                .max(Comparator
+                        .comparingInt(Card::getNumberScore)
+                        .thenComparingInt(Card::getShapeScore))
+                .orElse(null);
     }
 
-    // 두개의 카드를 비교, 그냥 가지고 있는 카드 중 가장 큰 카드를 비교하는 경우
-    private Card compareCard(Card card1, Card card2) {
+    private Card getHighCard(Card card1, Card card2) {
         // 숫자를 우선으로 비교, 숫자가 같은 경우 모양을 비교
         if (card1.getNumberScore() == card2.getNumberScore()) {
             return (card1.getShapeScore() > card2.getShapeScore()) ? card1 : card2;
