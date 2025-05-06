@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'jihukimme'
@@ -9,6 +10,10 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+application {
+    mainClass = 'CardGame.pocker.Application'
 }
 
 repositories {
@@ -25,3 +30,16 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// UTF-8 인코딩 설정
+//tasks.withType(JavaCompile).configureEach {
+//    options.encoding = 'UTF-8'
+//}
+//
+//tasks.withType(JavaExec).configureEach {
+//    jvmArgs += '-Dfile.encoding=UTF-8'
+//}
+//
+//tasks.withType(Test).configureEach {
+//    systemProperty 'file.encoding', 'UTF-8'
+//}
