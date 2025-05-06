@@ -1,0 +1,45 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'jihukimme'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'CardGame.pocker.Application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation platform('org.assertj:assertj-bom:3.27.3')
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testImplementation('org.assertj:assertj-core')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// UTF-8 인코딩 설정
+//tasks.withType(JavaCompile).configureEach {
+//    options.encoding = 'UTF-8'
+//}
+//
+//tasks.withType(JavaExec).configureEach {
+//    jvmArgs += '-Dfile.encoding=UTF-8'
+//}
+//
+//tasks.withType(Test).configureEach {
+//    systemProperty 'file.encoding', 'UTF-8'
+//}
